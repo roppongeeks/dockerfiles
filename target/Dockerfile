@@ -3,6 +3,7 @@ LABEL maintainer="knarfytrebil@gmail.com"
 LABEL description="Substrate"
 
 ARG PROFILE=release
+ARG VERSON=builder-0.0.4
 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -15,7 +16,7 @@ RUN apt-get update && \
 
 RUN find /var/lib/apt/lists/ -type f -not -name lock -delete
 
-COPY --from=roppongeeks/substrate:dev /root/substrate/target/$PROFILE/substrate /usr/local/bin
+COPY --from=roppongeeks/substrate:$VERSION /root/substrate/target/$PROFILE/substrate /usr/local/bin
 
 RUN useradd -m -u 1000 -U -s /bin/sh -d /substrate substrate
 USER substrate
