@@ -2,7 +2,7 @@ FROM debian:stretch-slim
 LABEL maintainer="knarfytrebil@gmail.com"
 LABEL description="Substrate"
 
-ARG PROFILE
+ARG PROFILE=debug
 
 RUN apt-get update && \
     apt-get upgrade -y && \
