@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/target:$COMMIT_SHA', '.']
+  env:
+  - 'PROFILE=debug'
+  dir: target
+timeout: 18000s
+options:
+  machineType: 'N1_HIGHCPU_32'
+
