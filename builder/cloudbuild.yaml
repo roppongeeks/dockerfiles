@@ -1,10 +1,14 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/target:$COMMIT_SHA', '.']
+  args: ['build', 
+         '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME', './builder',
+         '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:latest', './builder']
   env:
   - 'PROFILE=debug'
-  dir: target
-timeout: 18000s
 options:
   machineType: 'N1_HIGHCPU_32'
+timeout: 5h
+images:
+- 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME'
+- 'gcr.io/$PROJECT_ID/$REPO_NAME:latest'
 
