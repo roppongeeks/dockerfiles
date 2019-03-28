@@ -1,0 +1,15 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug', '.', '--build-arg', 'PROFILE=debug']
+  dir: 'builder'
+- name: 'gcr.io/cloud-builders/docker' 
+  args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug', '.', '--build-arg', 'PROFILE=debug','--build-arg', 'BUILDER_IMAGE=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug'] 
+  dir: 'target'
+timeout: 5h
+options:
+  machineType: 'N1_HIGHCPU_32'
+images:
+- 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug'
+tags: ['$TAG_NAME']  
