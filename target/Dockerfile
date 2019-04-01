@@ -1,5 +1,5 @@
-ARG VER=0.0.4
-FROM roppongeeks/substrate:builder-${VER} as builder
+ARG BUILDER_IMAGE
+FROM ${BUILDER_IMAGE} as builder
 
 FROM debian:stretch-slim
 ARG PROFILE=release
@@ -22,6 +22,7 @@ COPY --from=builder /root/substrate/target/${PROFILE}/substrate /usr/local/bin
 
 RUN useradd -m -u 1000 -U -s /bin/sh -d /substrate substrate
 USER substrate
+
 
 ENV RUST_BACKTRACE 1
 

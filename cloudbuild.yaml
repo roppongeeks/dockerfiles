@@ -1,15 +1,20 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug', '.', '--build-arg', 'PROFILE=debug']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-${_BUILD_MODE}', '.', '--build-arg', 'PROFILE=${_BUILD_MODE}']
   dir: 'builder'
-#- name: 'gcr.io/cloud-builders/docker' 
-#  args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug', '.', '--build-arg', 'PROFILE=debug','--build-arg', 'BUILDER_IMAGE=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug'] 
+  args: ['tag', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-${_BUILD_MODE}', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-builder']
+  dir: 'builder'
+- name: 'gcr.io/cloud-builders/docker' 
+  args: ['push', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-builder']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-${_BUILD_MODE}', '.', '--build-arg', 'PROFILE=${_BUILD_MODE}','--build-arg', 'BUILDER_IMAGE=gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-builder'] 
   dir: 'target'
 timeout: 5h
 options:
   machineType: 'N1_HIGHCPU_32'
+substitutions:
+  _BUILD_MODE: release 
 images:
-- 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-debug'
+- 'gcr.io/$PROJECT_ID/$REPO_NAME:$TAG_NAME-${_BUILD_MODE}'
 tags: ['$TAG_NAME']  
