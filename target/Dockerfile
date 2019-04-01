@@ -1,7 +1,8 @@
+ARG BUILDER_IMAGE
 FROM ${BUILDER_IMAGE} as builder
 
 FROM debian:stretch-slim
-ARG PROFILE=release
+ARG PROFILE
 
 LABEL maintainer="knarfytrebil@gmail.com"
 LABEL description="Substrate"
