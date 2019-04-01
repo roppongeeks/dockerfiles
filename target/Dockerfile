@@ -1,5 +1,4 @@
-ARG VER=0.0.4
-FROM roppongeeks/substrate:builder-${VER} as builder
+FROM ${BUILDER_IMAGE} as builder
 
 FROM debian:stretch-slim
 ARG PROFILE=release
