@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 RUN find /var/lib/apt/lists/ -type f -not -name lock -delete
 
-COPY --from=builder /root/substrate/target/${PROFILE}/substrate /usr/local/bin
+COPY --from=builder /substrate/target/${PROFILE}/substrate /usr/local/bin
 
 RUN useradd -m -u 1000 -U -s /bin/sh -d /substrate substrate
 USER substrate
