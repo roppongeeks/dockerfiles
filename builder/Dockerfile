@@ -1,8 +1,3 @@
-FROM roppongeeks/rustup:latest 
-LABEL maintainer="knarfytrebil@gmail.com"
-LABEL description="Substrate"
-
-ARG PROFILE
-RUN git clone https://github.com/roppongeeks/substrate.git
-RUN cd substrate && ./scripts/build.sh
-RUN cd substrate && cargo build --$PROFILE
+FROM kigawas/substrate-rust
+ARG PROFILE=release
+RUN apt update && apt install -y --no-install-recommends g++ cmake git libssl-dev pkg-config clang libclang-dev && git clone https://github.com/paritytech/substrate && cd substrate && ./scripts/build.sh && cargo build --$PROFILE && apt remove -y g++ cmake git libssl-dev pkg-config clang libclang-dev && apt autoremove -y && rm -rf /var/lib/apt/lists/*
